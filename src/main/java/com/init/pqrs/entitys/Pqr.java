@@ -9,6 +9,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenerationTime;
+import org.springframework.data.annotation.CreatedDate;
+
 @Entity
 @Table(name="pqrs")
 public class Pqr {
@@ -18,67 +22,78 @@ public class Pqr {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="user_id")
+	@Column(name="user_id", nullable = false)
 	private Long user_id;
 	
-	@Column(name="tipo")
+	@Column(name="tipo", nullable = false)
 	private String tipo;
 	
 	@Column(name="asunto", nullable=false)
 	private String asunto;
 	
-	@Column(name="estado")
+	@Column(name="estado", nullable = false)
 	private String estado;
 	
-	@Column(name="created_at")
+	@CreationTimestamp
+	@Column(name="created_at", nullable = false)
 	private Date created_at;
 	
-	@Column(name="expired_at")
+	@Column(name="expired_at", nullable = false)
 	private Date expired_at;
-	
-	public long getId() {
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getAsunto() {
-		return asunto;
-	}
-	public void setAsunto(String asunto) {
-		this.asunto = asunto;
-	}
+
 	public Long getUser_id() {
 		return user_id;
 	}
+
 	public void setUser_id(Long user_id) {
 		this.user_id = user_id;
 	}
-	public String getTipo_pqr() {
+
+	public String getTipo() {
 		return tipo;
 	}
-	public void setTipo_pqr(String tipo_pqr) {
-		this.tipo = tipo_pqr;
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
-	public String getEstado_pqr() {
+
+	public String getAsunto() {
+		return asunto;
+	}
+
+	public void setAsunto(String asunto) {
+		this.asunto = asunto;
+	}
+
+	public String getEstado() {
 		return estado;
 	}
-	public void setEstado_pqr(String estado_pqr) {
-		this.estado = estado_pqr;
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
+
 	public Date getCreated_at() {
 		return created_at;
 	}
+
 	public void setCreated_at(Date created_at) {
 		this.created_at = created_at;
 	}
+
 	public Date getExpired_at() {
 		return expired_at;
 	}
+
 	public void setExpired_at(Date expired_at) {
 		this.expired_at = expired_at;
-	}
-	public void setId(Long id) {
-		this.id = id;
 	}
 }
