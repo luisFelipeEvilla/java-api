@@ -24,18 +24,11 @@ import com.init.pqrs.entitys.Pqr;
 import com.init.pqrs.entitys.User;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping()
 public class UsersREST {
 	
 	@Autowired
 	private UsersDAO usersDAO;
-	
-	@GetMapping
-	public ResponseEntity<List<User>> getUsers() {
-		List<User> users = usersDAO.findAll();
-	
-		return ResponseEntity.ok(users);
-	}
 	
 	@RequestMapping(value="/signin", method = RequestMethod.POST)
 	public ResponseEntity<User> signin(@RequestBody LoginData user) {
@@ -66,13 +59,13 @@ public class UsersREST {
 		return ResponseEntity.ok(newUser);
 	}
 	
-	@DeleteMapping(value="{userId}")
+	@DeleteMapping(value="/users/{userId}")
 	public ResponseEntity<Void> deleteUser(@PathVariable("pqrId") Long userId) {
 		usersDAO.deleteById(userId);
 		return ResponseEntity.ok(null);
 	}
 	
-	@PutMapping
+	@PutMapping(value="/users/{userId}")
 	public ResponseEntity<User> updateUser(@RequestBody User user) {
 		User updatedUser = usersDAO.save(user);
 		

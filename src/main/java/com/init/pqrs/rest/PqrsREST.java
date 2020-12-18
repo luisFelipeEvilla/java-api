@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.init.pqrs.dao.PqrsDAO;
+import com.init.pqrs.dao.UsersDAO;
+import com.init.pqrs.entitys.CreatePqrForm;
 import com.init.pqrs.entitys.Pqr;
+import com.init.pqrs.entitys.User;
 
 @RestController
 @RequestMapping("/pqrs")
@@ -23,6 +26,9 @@ public class PqrsREST {
 	
 	@Autowired
 	private PqrsDAO pqrsDAO;
+	
+	@Autowired
+	private UsersDAO usersDAO;
 	
 	@GetMapping
 	public ResponseEntity<List<Pqr>> getPqrs() {
@@ -43,10 +49,28 @@ public class PqrsREST {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Pqr> createPqr(@RequestBody Pqr pqr) {
-		Pqr newPqr = pqrsDAO.save(pqr);
+	public ResponseEntity<Pqr> createPqr(@RequestBody CreatePqrForm pqr) {
 		
-		return ResponseEntity.ok(newPqr);
+		Optional<User> optionalUser = usersDAO.findByEmail(pqr.getEmail());
+		
+		if (optionalUser.isPresent()) {
+			User user = optionalUser.get();
+			Long userId = user.getId();
+			
+			Pqr newPqr = new Pqr();
+			
+			newPqr.setAsunto(pqr.getAsunto());
+			newPqr.setEstado(pqr.getEstado());
+			newPqr.setTipo(pqr.getTipo());
+			newPqr.setExpired_at(pqr.getExpired_at());
+			newPqr.setUser_id(userId);
+			
+			newPqr = pqrsDAO.save(newPqr);
+			
+			return ResponseEntity.ok(newPqr);
+		} else {
+			return ResponseEntity.noContent().build();
+		}
 	}
 	
 	@DeleteMapping(value="{pqrId}")

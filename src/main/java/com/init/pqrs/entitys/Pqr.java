@@ -31,7 +31,7 @@ public class Pqr {
 	@Column(name="asunto", nullable=false)
 	private String asunto;
 	
-	@Column(name="estado", nullable = false)
+	@Column(name="estado", columnDefinition = "VARCHAR(10) default 'Nuevo' NOT NULL")
 	private String estado;
 	
 	@CreationTimestamp
